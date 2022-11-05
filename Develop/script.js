@@ -1,3 +1,5 @@
+
+
 // Random value generators
 var randomLowerValue = function() {
   return String.fromCharCode(Math.floor(Math.random() * 26 + 97));   
@@ -33,12 +35,28 @@ var specialCharConfirm = function() {
   return window.confirm("Would you like to include special characters?");
 }
 
+var numOfChar = function() {
+  return window.prompt("Must use between 8 and 128 characters?")
+}
+
+// Listed the confirmed cases as variables
+var generateConfirms = function() {
+  var lower = lowercaseConfirm();
+  var upper = uppercaseConfirm();
+  var num = numericConfirm();
+  var symbol = specialCharConfirm();
+  var length = +numOfChar();
+
+  console.log(lower, upper, num, symbol, length);
+  console.log(lower + upper + num + symbol);
+}
 
 
+// Generating password function
 var generatePassword = function() {
+  var generatedPassword = '';
+  generateConfirms();
 
-  // Needs to return a single function as an array to view here
-  return lowercaseConfirm();
 }
 
 // Get references to the #generate element
@@ -51,8 +69,6 @@ function writePassword() {
 
   passwordText.value = password;
 }
-
-
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
