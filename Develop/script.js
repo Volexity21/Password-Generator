@@ -1,17 +1,19 @@
 // Generating password function
 // This is not an object, this is a function
+
+var valueBool = {
+  lowerBool : null,
+  upperBool : null,
+  numBool : null,
+  symbolBool : null
+}
+
 var generatePassword = function() {
 
-  var userPassoword = '';
-
-  var lower = '';
-  var upper = '';
-  var num = '';
-  var symbol = '';
+  var finalPassword = '';
   var length = null;
 
-  //This needs to return a number based upon the true value for the For loop
-  var typeCount = [lower, upper, num, symbol];
+  var valueBoolObj = Object.create(valueBool);
   // Random value generators
   var randomLowerValue = function() {
     return String.fromCharCode(Math.floor(Math.random() * 26 + 97));   
@@ -32,23 +34,39 @@ var generatePassword = function() {
 
   // Confirmation boxes on which characters user would like to use
   var lowercaseConfirm = function() {
-    return window.confirm("Would you like to include lowercase characters?");
+    valueBoolObj.lowerBool = window.confirm("Would you like to include lowercase characters?");
   }
 
   var uppercaseConfirm = function() {
-    return window.confirm("Would you like to include uppercase characters?");
+    valueBoolObj.upperBool = window.confirm("Would you like to include uppercase characters?");
   }
 
   var numericConfirm = function() {
-    return window.confirm("Would you like to include numeric characters?");
+    valueBoolObj.numBool = window.confirm("Would you like to include numeric characters?");
   }
 
   var specialCharConfirm = function() {
-    return window.confirm("Would you like to include special characters?");
+    valueBoolObj.symbolBool = window.confirm("Would you like to include special characters?");
   }
 
   var numOfChar = function() {
-    return window.prompt("Must use between 8 and 128 characters?")
+    length = window.prompt("Must use between 8 and 128 characters?");
+
+    // How does this work???
+    // while (length == String) {
+    //   window.alert("You need to enter a numeric value.");
+    //   length = +(window.prompt("Must use between 8 and 128 characters?"));
+    // }
+    
+    while (length < 8 || length > 128) {
+      if (length < 8) {
+        window.alert("Character length needs to be at least 8.");
+      } else if (length > 128) {
+        window.alert("Character length cannot exceed 128.");
+      } 
+      length = window.prompt("Must use between 8 and 128 characters?");
+    }
+    return length;
   }
   
   var randomValueFunc = function() {
@@ -56,31 +74,52 @@ var generatePassword = function() {
   }
   //Generates the true or false of confirmations and returns the answers in an array
   var generateConfirms = function() {
-    var lowerConf = lowercaseConfirm();
-    var upperConf = uppercaseConfirm();
-    var numConf = numericConfirm();
-    var symbolConf = specialCharConfirm();
-    var lengthConf = numOfChar();
+    lowercaseConfirm();
+    uppercaseConfirm();
+    numericConfirm();
+    specialCharConfirm();
+    numOfChar();
     
-    return typeCount[0] = lowerConf, typeCount[1] = upperConf, typeCount[2] = numConf, typeCount[3] = symbolConf, length = lengthConf;
+    // return valueBoolObj.lowerBool = lowerConf, 
+    // valueBoolObj.upperBool = upperConf, 
+    // valueBoolObj.numBool = numConf, 
+    // valueBoolObj.symbolBool = symbolConf, 
+    // length = lengthConf;
   }
 
   generateConfirms();
-  // For the length of the confirmed length
-    for (i = 0; i < length; i++) {
-      // Run code for each count type
-      for (i = 0; i < typeCount.length; i++) {
-        if (typeCount[i]) {
-          //This does recognize when there is a true value
-          console.log('made it here');
-          return userPassoword = userPassoword + randomValueFunc()[i];
-        }
-        return;
-      }
-      return;
+
+
+
+  for (i = 0; i < length; i++) {
+
+    var emptyArr = [];
+
+    if (valueBoolObj.lowerBool) {
+      emptyArr.push(randomLowerValue());
     }
 
-    return userPassoword;
+    if (valueBoolObj.upperBool) {
+      emptyArr.push(randomUpperValue());
+    } 
+
+    if (valueBoolObj.numBool) {
+      emptyArr.push(randomNumValue());
+    }
+
+    if (valueBoolObj.symbolBool) {
+      emptyArr.push(randomSymbolValue());
+    }
+
+    console.log(emptyArr);
+    // We are taking a random number from the empty array and adding it to the final string
+
+    finalPassword += (emptyArr[Math.floor(Math.random() * emptyArr.length)]);
+    // console.log(finalPassword);
+    // finalPassword += userPassword[i];
+  }
+
+  return finalPassword;
 }
 
 // Get references to the #generate element
